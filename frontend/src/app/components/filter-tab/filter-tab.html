@@ -1,0 +1,14 @@
+<div class="filter-tab">
+    <button (click)="navigateBack()">
+        {{ currentNode }}
+    </button>
+    <ul class="filters-list">
+        @for (region of getChildrenAsList(); track region) {
+            <li>
+                <button (click)="navigateForward(region)">
+                    {{ region }}
+                </button>
+            </li>
+        }
+    </ul>
+</div>

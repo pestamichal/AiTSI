@@ -1,0 +1,46 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* ========== Theme: Standard ========== */
+:root,
+[data-theme="standard"] {
+  --color-bg: rgb(211, 209, 198);
+  --color-text: rgb(51, 51, 48);
+  --color-text-secondary: rgb(207, 205, 193);
+  --color-surface: rgb(48, 48, 46);
+  --color-border: rgb(48, 48, 46);
+  --color-text-muted: rgb(60, 60, 58);
+  --color-focus-ring: 2px solid rgb(38, 38, 36);
+}
+
+/* ========== Theme: Dark ========== */
+[data-theme="dark"] {
+  --color-bg: rgb(38, 38, 36);
+  --color-text: rgb(194, 192, 182);
+  --color-text-secondary: rgb(56, 56, 53);
+  --color-surface: rgb(168, 166, 157);
+  --color-border: rgb(80, 78, 76);
+  --color-text-muted: rgb(160, 158, 148);
+  --color-focus-ring: 2px solid rgb(194, 192, 182);
+}
+
+/* ========== Theme: High contrast (WCAG AAA-friendly) ========== */
+[data-theme="high-contrast"] {
+  --color-bg: #fff;
+  --color-text: #000;
+  --color-text-secondary: #333;
+  --color-surface: #fff;
+  --color-border: #000;
+  --color-text-muted: #000;
+  --color-focus-ring: 3px solid #000;
+}
+
+/* Apply theme to app shell */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+*:focus-visible {
+  outline: var(--color-focus-ring);
+  outline-offset: 2px;
+}

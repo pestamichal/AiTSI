@@ -1,0 +1,28 @@
+<div class="header">
+  <div class="header__spacer"></div>
+  <h1 class="header__title">
+    <a href="/">{{ title }}</a>
+  </h1>
+  <div class="header__actions">
+    @if (userName) {
+      <span class="header__user d-none d-md-inline">
+        <a href="/user/{{ userId }}">Witaj, {{ userName }}!</a>
+      </span>
+    }
+    @if (user) {
+      <button type="button" class="header__btn" (click)="logout()">Wyloguj się</button>
+    } @else {
+      <asl-google-signin-button type="standard" size="medium"></asl-google-signin-button>
+    }
+    <select 
+      class="header__theme-select"
+      [(ngModel)]="currentTheme"
+      (ngModelChange)="setTheme($event)"
+      [attr.aria-label]="'Motyw'"
+    >
+      @for (opt of themeOptions; track opt.id) {
+        <option [value]="opt.id">{{ opt.label }}</option>
+      }
+    </select>
+  </div>
+</div>
