@@ -23,6 +23,8 @@ app-header {
         min-width: 0;
         min-height: 0;
         overflow-y: auto;
+        border-right: 1px solid var(--color-border);
+        box-sizing: border-box;
     }
 
     #main-panel {

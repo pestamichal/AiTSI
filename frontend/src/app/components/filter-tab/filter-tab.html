@@ -1,7 +1,7 @@
 <div class="filter-tab">
     @if (currentNode) {
         @if(currentNode.parent){
-            <button (click)="navigateBack()">  
+            <button class="action-button" (click)="navigateBack()">  
                 <i class="bi bi-caret-left-fill"></i>
                 <span>{{ breadcrumb[(breadcrumb.length - 1) - 1].name}}</span>
             </button>
@@ -13,7 +13,7 @@
     <ul class="filters-list">
         @for (region of currentChildren; track region.id) {
             <li>
-                <button (click)="navigateForward(region)">
+                <button class="filter-button" (click)="navigateForward(region)">
                     {{ region.name }}
                 </button>
             </li>

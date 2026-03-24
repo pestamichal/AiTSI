@@ -41,10 +41,20 @@
 }
 
 /* Apply theme to app shell */
+html,
+body {
+  min-height: 100vh;
+}
+
 body {
   margin: 0;
   background-color: var(--color-bg);
   color: var(--color-text);
+}
+
+app-root {
+  display: block;
+  min-height: 100vh;
 }
 
 *:focus-visible {
