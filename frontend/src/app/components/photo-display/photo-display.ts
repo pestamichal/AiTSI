@@ -18,6 +18,9 @@ export class PhotoDisplay {
   @Input()
   public photoData: PhotoResponseModel | undefined;
 
+  @Input()
+  public locationBreadcrumbs: string | undefined;
+
   @Output()
   public photoRemoved = new EventEmitter<string>();
 

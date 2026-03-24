@@ -17,12 +17,6 @@ export class FilterTab implements OnInit {
 
   public ngOnInit(): void {
     this.locationService.getTerritorialData().subscribe((resp: TerritorialData) => {
-      // const virtualRoot: RegionNode = {
-      //   name: 'Lokalizacja',
-      //   id: 0,
-      //   parent: null,
-      //   subregions: resp.data,
-      // };
       this.breadcrumb = [resp.data[0]];
       this.currentChildren = resp.data[0].subregions!;
     });

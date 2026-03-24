@@ -44,6 +44,7 @@
             </button>
         </div>
     }
+    <span id="breadcrumbs"> {{ this.locationBreadcrumbs }}</span>
     <span id="author">{{ this.photoData?.author?.split("@")![0] }}</span>
     <div id="container-image">
         <img src="{{this.getPhotoUrl(this.photoData?.id!)}}" alt="{{this.photoData?.description}}">

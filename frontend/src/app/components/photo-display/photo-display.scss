@@ -25,6 +25,7 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.3rem;
+        padding-bottom: 0;
 
         .header-leading {
             display: flex;
@@ -109,6 +110,13 @@
         &--danger {
             color: rgb(160, 40, 40);
         }
+    }
+
+    #breadcrumbs{
+        font-weight: 600;
+        padding: 0.3rem;
+        padding-top: 0;
+        color: var(--color-text-muted);
     }
 
     #author{
