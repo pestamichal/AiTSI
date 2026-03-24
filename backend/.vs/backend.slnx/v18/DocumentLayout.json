@@ -1,0 +1,69 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\pesta\\studia\\2\\AiTSI\\backend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5ADA2BB6-BD8A-FBBA-631C-E748BB1D8E69}|backend.csproj|c:\\users\\pesta\\studia\\2\\aitsi\\backend\\controllers\\photoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5ADA2BB6-BD8A-FBBA-631C-E748BB1D8E69}|backend.csproj|solutionrelative:controllers\\photoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5ADA2BB6-BD8A-FBBA-631C-E748BB1D8E69}|backend.csproj|c:\\users\\pesta\\studia\\2\\aitsi\\backend\\models\\photomodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5ADA2BB6-BD8A-FBBA-631C-E748BB1D8E69}|backend.csproj|solutionrelative:models\\photomodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5ADA2BB6-BD8A-FBBA-631C-E748BB1D8E69}|backend.csproj|c:\\users\\pesta\\studia\\2\\aitsi\\backend\\databasecontext\\databasemodels\\photo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5ADA2BB6-BD8A-FBBA-631C-E748BB1D8E69}|backend.csproj|solutionrelative:databasecontext\\databasemodels\\photo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Photo.cs",
+              "DocumentMoniker": "C:\\Users\\pesta\\studia\\2\\AiTSI\\backend\\DatabaseContext\\DatabaseModels\\Photo.cs",
+              "RelativeDocumentMoniker": "DatabaseContext\\DatabaseModels\\Photo.cs",
+              "ToolTip": "C:\\Users\\pesta\\studia\\2\\AiTSI\\backend\\DatabaseContext\\DatabaseModels\\Photo.cs",
+              "RelativeToolTip": "DatabaseContext\\DatabaseModels\\Photo.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAA3wB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T09:27:51.424Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PhotoModels.cs",
+              "DocumentMoniker": "C:\\Users\\pesta\\studia\\2\\AiTSI\\backend\\Models\\PhotoModels.cs",
+              "RelativeDocumentMoniker": "Models\\PhotoModels.cs",
+              "ToolTip": "C:\\Users\\pesta\\studia\\2\\AiTSI\\backend\\Models\\PhotoModels.cs",
+              "RelativeToolTip": "Models\\PhotoModels.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAnwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T09:26:48.744Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PhotosController.cs",
+              "DocumentMoniker": "C:\\Users\\pesta\\studia\\2\\AiTSI\\backend\\Controllers\\PhotosController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PhotosController.cs",
+              "ToolTip": "C:\\Users\\pesta\\studia\\2\\AiTSI\\backend\\Controllers\\PhotosController.cs",
+              "RelativeToolTip": "Controllers\\PhotosController.cs",
+              "ViewState": "AgIAAHYAAAAAAAAAAAAkwI0AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T09:00:42.301Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

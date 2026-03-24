@@ -1,0 +1,6 @@
+
+<div id="photo-list">
+    @for(photo of this.photoData; track photo.id){
+        <app-photo-display class="photo-display-item" [photoData]="photo" (photoRemoved)="onPhotoRemoved($event)"></app-photo-display>
+    }
+</div>

@@ -1,0 +1,54 @@
+<div id="container">
+    <div id="container-header">
+        <div class="header-leading">
+            <h2>{{ this.photoData?.title }}</h2>
+            <span>•</span>
+            <span class="date">{{ this.buildDate(this.photoData?.yearTaken!, this.photoData?.monthTaken, this.photoData?.dayTaken)}}</span>
+        </div>
+        @if(userLoggedIn && (userInfo?.email == photoData?.author || userInfo?.isAdmin)){
+            <button
+                type="button"
+                class="menu-trigger"
+                aria-label="Opcje wpisu"
+                aria-haspopup="menu"
+                [attr.aria-expanded]="menuOpen"
+                (click)="toggleMenu($event)"
+            >
+                <i class="bi bi-three-dots-vertical" aria-hidden="true"></i>
+            </button>
+        }
+    </div>
+    @if (menuOpen) {
+        <div
+            class="photo-menu-backdrop"
+            aria-hidden="true"
+            (click)="closeMenu()"
+        ></div>
+        <div
+            class="photo-menu-panel"
+            role="menu"
+            [style.top.px]="menuPanelTopPx"
+            [style.right.px]="menuPanelRightPx"
+            (click)="$event.stopPropagation()"
+        >
+            <button type="button" class="photo-menu-item" role="menuitem" (click)="onEditPhoto()">
+                Edytuj
+            </button>
+            @if(userInfo?.isAdmin){
+                <button type="button" class="photo-menu-item" role="menuitem" (click)="onBlockAuthor()">
+                    Zablokuj autora
+                </button>
+            }
+            <button type="button" class="photo-menu-item photo-menu-item--danger" role="menuitem" (click)="onRemovePhoto()">
+                Usuń wpis
+            </button>
+        </div>
+    }
+    <span id="author">{{ this.photoData?.author?.split("@")![0] }}</span>
+    <div id="container-image">
+        <img src="{{this.getPhotoUrl(this.photoData?.id!)}}" alt="{{this.photoData?.description}}">
+    </div>
+    <div id="container-details">
+        <span>{{ this.photoData?.description }}</span>
+    </div>
+</div>

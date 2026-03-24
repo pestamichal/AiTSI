@@ -1,0 +1,14 @@
+{
+    "identities": [
+      {
+        "name": "aitsi-local",
+        "credentials": [
+          {
+            "accessKey": "accessKey",
+            "secretKey": "secretKey"
+          }
+        ],
+        "actions": ["Admin", "Read", "Write", "List", "Tagging"]
+      }
+    ]
+  }

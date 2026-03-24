@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Powiat, TerritorialData, Voivodeship } from '@models';
+import { RegionNode, TerritorialData } from '@models';
+import { LocationService } from '@services';
 
 @Component({
   selector: 'app-filter-tab',
@@ -10,51 +10,39 @@ import { Powiat, TerritorialData, Voivodeship } from '@models';
   styleUrl: './filter-tab.scss',
 })
 export class FilterTab implements OnInit {
-  private data: TerritorialData | null = null;
-  public path: Record<string, TerritorialData | Voivodeship | Powiat | string[]>[] = []
-  public currentNode: string = ""
-  
+  public breadcrumb: RegionNode[] = [];
+  public currentChildren: RegionNode[] = [];
 
-  constructor(
-    private http: HttpClient
-  ){
-
-  }
+  constructor(private locationService: LocationService) {}
 
   public ngOnInit(): void {
-    this.http.get<TerritorialData>('assets/polska_administracja.json').subscribe(
-      (data) => { 
-        this.data = data;
-        this.path = [this.data]
-        this.currentNode = Object.keys(this.data)[0]
-       }
-    )
+    this.locationService.getTerritorialData().subscribe((resp: TerritorialData) => {
+      // const virtualRoot: RegionNode = {
+      //   name: 'Lokalizacja',
+      //   id: 0,
+      //   parent: null,
+      //   subregions: resp.data,
+      // };
+      this.breadcrumb = [resp.data[0]];
+      this.currentChildren = resp.data[0].subregions!;
+    });
   }
 
-  public navigateForward(nodeValue: string): void {
-    const current = this.path[this.path.length - 1][this.currentNode]
- 
-    if(current && nodeValue in current && !Array.isArray(current))
-    {
-      this.path = [...this.path, current];
-      this.currentNode = nodeValue;
-    }
+  public get currentNode(): RegionNode | null {
+    return this.breadcrumb.length > 0
+      ? this.breadcrumb[this.breadcrumb.length - 1]
+      : null;
   }
 
-  public navigateBack(): void{
-    if(this.path.length === 1) return;
-
-    this.path = this.path.slice(0, -1);
-    this.currentNode = Object.keys(this.path[this.path.length - 1])[0]
+  public navigateForward(child: RegionNode): void {
+    this.breadcrumb = [...this.breadcrumb, child];
+    this.currentChildren = child.subregions ?? [];
   }
 
-  public getChildrenAsList(): string[]{
-    const current = this.path[this.path.length - 1][this.currentNode]
-    if(!Array.isArray(current)){
-      const children = Object.keys(current);
-      return children
-    }else{
-      return current;
-    }
+  public navigateBack(): void {
+    if (this.breadcrumb.length <= 1) return;
+    this.breadcrumb = this.breadcrumb.slice(0, -1);
+    const parent = this.breadcrumb[this.breadcrumb.length - 1];
+    this.currentChildren = parent.subregions ?? [];
   }
 }

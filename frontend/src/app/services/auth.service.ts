@@ -4,6 +4,7 @@ import {BehaviorSubject, map, Observable, of, switchMap} from 'rxjs';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '@environments/environments';
+import { UserInfo } from '@models';
 
 
 @Injectable({
@@ -16,6 +17,20 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router) {
+  }
+  
+  private readonly apiUrl = `${environment.api_url}/api/auth`;
+
+  public getRequestHeaders(): HttpHeaders{
+    return new HttpHeaders({Authorization: `Bearer ${this.googleUserAccount.getValue()?.idToken}`})
+  }
+
+  public getUserInfo(): Observable<UserInfo>{
+    return this.http.get<UserInfo>(`${this.apiUrl}/me`, {headers: this.getRequestHeaders()});
+  }
+
+  public blockUser(email: string): Observable<boolean>{
+    return this.http.post<boolean>(`${this.apiUrl}/block`, {email: email}, {headers: this.getRequestHeaders()});
   }
 
   public logout(): void {

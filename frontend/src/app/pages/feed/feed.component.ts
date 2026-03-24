@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@services';
-import { Header, FilterTab, SearchBar, UserPanel} from '@components';
+import { Header, FilterTab, SearchBar, UserPanel, PhotoList} from '@components';
 
 @Component({
   selector: 'app-feed.component',
@@ -8,7 +8,8 @@ import { Header, FilterTab, SearchBar, UserPanel} from '@components';
     Header,
     FilterTab,
     SearchBar,
-    UserPanel
+    UserPanel,
+    PhotoList
   ],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.scss',

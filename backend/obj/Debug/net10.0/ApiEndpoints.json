@@ -1,0 +1,146 @@
+[
+  {
+    "ContainingType": "backend.Controllers.AuthController",
+    "Method": "BlockUser",
+    "RelativePath": "api/auth/block",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "data",
+        "Type": "backend.Models.BlockUserModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.AuthController",
+    "Method": "Me",
+    "RelativePath": "api/auth/me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.LocationsController",
+    "Method": "GetAll",
+    "RelativePath": "api/Locations/all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.PhotosController",
+    "Method": "GetPhotos",
+    "RelativePath": "api/photos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [],
+    "EndpointName": "GetPhotos"
+  },
+  {
+    "ContainingType": "backend.Controllers.PhotosController",
+    "Method": "GetPhotoFile",
+    "RelativePath": "api/photos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [],
+    "EndpointName": "GetPhotoFile"
+  },
+  {
+    "ContainingType": "backend.Controllers.PhotosController",
+    "Method": "CreatePhoto",
+    "RelativePath": "api/photos",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "backend.Models.CreatePhotoModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [],
+    "EndpointName": "CreatePhoto"
+  },
+  {
+    "ContainingType": "backend.Controllers.PhotosController",
+    "Method": "DeletePhoto",
+    "RelativePath": "api/photos",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [],
+    "EndpointName": "DeletePhoto"
+  },
+  {
+    "ContainingType": "backend.Controllers.PhotosController",
+    "Method": "CreatePhoto",
+    "RelativePath": "api/photos/create",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "backend.Models.CreatePhotoModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.PhotosController",
+    "Method": "DeletePhoto",
+    "RelativePath": "api/photos/delete/{photoId}",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "photoId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.PhotosController",
+    "Method": "GetPhotoFile",
+    "RelativePath": "api/photos/file/{photoId}",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "photoId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "backend.Controllers.PhotosController",
+    "Method": "GetPhotos",
+    "RelativePath": "api/photos/get",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

@@ -1,0 +1,164 @@
+<app-header></app-header>
+<div id="form-container">
+  <form id="photo-form" [formGroup]="photoForm" (ngSubmit)="createPhoto()">
+    <div class="form-subsection-centered">
+      <div>
+        @if (previewUrl) {
+          <div id="photo-preview">
+            <img [src]="previewUrl" alt="Podgląd zdjęcia" />
+          </div>
+        }
+      </div>
+      <div class="form-subsection-inputs">
+        <label for="photo-file">Zdjęcie</label>
+        <input
+          id="photo-file"
+          type="file"
+          accept="image/*"
+          (change)="onPhotoSelected($event)"
+        />
+      </div>
+    </div>
+    <div class="form-subsection">
+      <div class="form-subsection-header">
+        <span>Tytuł</span>
+      </div>
+      <div class="form-subsection-inputs">
+        <label for="title" hidden>Tytuł</label>
+        <input
+          class="form-input"
+          formControlName="title"
+          id="title"
+          type="text"
+        >
+      </div>
+    </div>
+    <div class="form-subsection">
+      <div class="form-subsection-header">
+        <span>Opis</span>
+      </div>
+      <div class="form-subsection-inputs">
+        <label for="description" hidden>Opis</label>
+        <textarea class="form-input" formControlName="description" name="description" id="description"></textarea>
+      </div>
+    </div>
+    <div class="form-subsection">
+      <div class="form-subsection-header">
+        <span>Gdzie?</span>
+      </div>
+      <div class="form-subsection-inputs">
+        <div class="form-subsection-input-group">
+          <label for="country">Państwo</label>
+          <select class="form-input" formControlName="countryId" name="country" id="country">
+            @for(country of this.getCountries(); track country.id){
+              <option [value]="country.id">{{ country.name }}</option>
+            }
+          </select>
+        </div> 
+        <div class="form-subsection-input-group">
+          <label for="voivodeship">Województwo (opcjonalnie)</label>
+          <select class="form-input" formControlName="voivodeshipId" name="voivodeship" id="voivodeship">
+            @for(voivodeship of this.getVoivodeships(); track voivodeship.id){
+              <option [value]="voivodeship.id">{{ voivodeship.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-subsection-input-group">
+          <label for="county">Powiat (opcjonalnie)</label>
+          <select class="form-input" formControlName="countyId" name="county" id="county">
+            @for(county of this.getCounties(); track county.id){
+              <option [value]="county.id">{{ county.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-subsection-input-group">
+          <label for="city">Miasto (opcjonalnie)</label>
+          <select class="form-input" formControlName="cityId" name="city" id="city">
+            @for(city of this.getCities(); track city.id){
+              <option [value]="city.id">{{ city.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-subsection">
+      <div class="form-subsection-header">
+        <span>Kiedy?</span>
+      </div>
+      <div class="form-subsection-inputs">
+        <div class="form-subsection-input-group">
+          <label for="year-taken">Rok</label>
+          <input
+            class="form-input"
+            id="year-taken"
+            type="number"
+            formControlName="yearTaken"
+            [attr.min]="1000"
+            [attr.max]="9999"
+            placeholder="np. 2024"
+          />
+        </div>
+        <div class="form-subsection-input-group">
+          <label for="month-taken">Miesiąc (opcjonalnie)</label>
+          <input
+            class="form-input"
+            id="month-taken"
+            type="number"
+            formControlName="monthTaken"
+            [attr.min]="1"
+            [attr.max]="12"
+            placeholder="1–12"
+          />
+        </div>
+        <div class="form-subsection-input-group">
+          <label for="day-taken">Dzień (opcjonalnie)</label>
+          <input
+            class="form-input"
+            id="day-taken"
+            type="number"
+            formControlName="dayTaken"
+            [attr.min]="1"
+            [attr.max]="31"
+            placeholder="1–31"
+          />
+        </div>
+      </div>
+    </div>
+    <div id="form-errors">
+      @if (photoForm.get('photoData')?.touched && photoForm.get('photoData')?.errors?.['required']) {
+        <p class="field-error">Dodaj zdjęcie.</p>
+      }
+      @if (photoForm.get('yearTaken')?.touched && photoForm.get('yearTaken')?.errors?.['required']) {
+        <p class="field-error">Podaj rok.</p>
+      }
+      @if (photoForm.get('yearTaken')?.touched && photoForm.get('yearTaken')?.errors?.['notInteger']) {
+        <p class="field-error">Rok musi być liczbą całkowitą.</p>
+      }
+      @if (photoForm.get('yearTaken')?.touched && photoForm.get('yearTaken')?.errors?.['yearRange']) {
+        <p class="field-error">Rok musi być z zakresu 1000–9999.</p>
+      }
+      @if (photoForm.get('monthTaken')?.touched && photoForm.get('monthTaken')?.errors?.['notInteger']) {
+        <p class="field-error">Miesiąc musi być liczbą całkowitą.</p>
+      }
+      @if (photoForm.get('monthTaken')?.touched && photoForm.get('monthTaken')?.errors?.['monthRange']) {
+        <p class="field-error">Miesiąc musi być z zakresu 1–12.</p>
+      }
+      @if (photoForm.get('dayTaken')?.touched && photoForm.get('dayTaken')?.errors?.['notInteger']) {
+        <p class="field-error">Dzień musi być liczbą całkowitą.</p>
+      }
+      @if (photoForm.get('dayTaken')?.touched && photoForm.get('dayTaken')?.errors?.['dayRange']) {
+        <p class="field-error">Dzień musi być z zakresu 1–31.</p>
+      }
+      @if (photoForm.touched && photoForm.errors?.['dayWithoutMonth']) {
+        <p class="field-error">Aby podać dzień, wybierz najpierw miesiąc.</p>
+      }
+      @if (photoForm.touched && photoForm.errors?.['invalidCalendarDate']) {
+        <p class="field-error">Ta data nie istnieje w kalendarzu (np. 30 lutego).</p>
+      }
+    </div>
+    <div class="form-subsection-centered">
+      <button type="submit">Wyślij</button>
+    </div>
+  </form>
+
+</div>

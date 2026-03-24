@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-local
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: aitsi
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  core-storage:
+    image: chrislusf/seaweedfs:4.17
+    ports:
+      - "8333:8333"
+    restart: unless-stopped
+    command: ["server", "-s3", "-s3.config=/etc/seaweedfs/s3.json"]
+    volumes:
+      - ./s3.json:/etc/seaweedfs/s3.json:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9333/cluster/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  postgres_data:

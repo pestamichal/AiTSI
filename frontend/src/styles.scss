@@ -4,6 +4,8 @@
 :root,
 [data-theme="standard"] {
   --color-bg: rgb(211, 209, 198);
+  --color-bg-secondary: rgb(201, 200, 190);
+  --color-bg-tertiary: rgb(223, 221, 210);
   --color-text: rgb(51, 51, 48);
   --color-text-secondary: rgb(207, 205, 193);
   --color-surface: rgb(48, 48, 46);
@@ -15,6 +17,8 @@
 /* ========== Theme: Dark ========== */
 [data-theme="dark"] {
   --color-bg: rgb(38, 38, 36);
+  --color-bg-secondary: rgb(50, 50, 48);
+  --color-bg-tertiary: rgb(31, 31, 30);
   --color-text: rgb(194, 192, 182);
   --color-text-secondary: rgb(56, 56, 53);
   --color-surface: rgb(168, 166, 157);
@@ -26,6 +30,8 @@
 /* ========== Theme: High contrast (WCAG AAA-friendly) ========== */
 [data-theme="high-contrast"] {
   --color-bg: #fff;
+  --color-bg-secondary: #fff;
+  --color-bg-tertiary: #fff;
   --color-text: #000;
   --color-text-secondary: #333;
   --color-surface: #fff;
@@ -36,6 +42,7 @@
 
 /* Apply theme to app shell */
 body {
+  margin: 0;
   background-color: var(--color-bg);
   color: var(--color-text);
 }

@@ -1,12 +1,20 @@
 <div class="filter-tab">
-    <button (click)="navigateBack()">
-        {{ currentNode }}
-    </button>
+    @if (currentNode) {
+        @if(currentNode.parent){
+            <button (click)="navigateBack()">  
+                <i class="bi bi-caret-left-fill"></i>
+                <span>{{ breadcrumb[(breadcrumb.length - 1) - 1].name}}</span>
+            </button>
+        }
+        <h2 id="current-node">
+            {{ currentNode.name }}
+        </h2>
+    }
     <ul class="filters-list">
-        @for (region of getChildrenAsList(); track region) {
+        @for (region of currentChildren; track region.id) {
             <li>
                 <button (click)="navigateForward(region)">
-                    {{ region }}
+                    {{ region.name }}
                 </button>
             </li>
         }

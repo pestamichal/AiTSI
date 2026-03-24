@@ -1,4 +1,6 @@
 export {Header} from './header/header';
 export {FilterTab} from './filter-tab/filter-tab';
 export {SearchBar} from './search-bar/search-bar';
-export {UserPanel} from './user-panel/user-panel'
+export {UserPanel} from './user-panel/user-panel';
+export { PhotoList } from './photo-list/photo-list';
+export { PhotoDisplay } from './photo-display/photo-display';
