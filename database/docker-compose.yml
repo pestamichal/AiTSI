@@ -11,21 +11,32 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-net
 
   core-storage:
     image: chrislusf/seaweedfs:4.17
     ports:
       - "8333:8333"
+      - "8888:8888"
     restart: unless-stopped
-    command: ["server", "-s3", "-s3.config=/etc/seaweedfs/s3.json"]
+    command: ["server", "-s3", "-s3.config=/etc/seaweedfs/s3.json", "-dir=/data", "-filer"]
     volumes:
       - ./s3.json:/etc/seaweedfs/s3.json:ro
+      - seaweedfs_data:/data
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:9333/cluster/healthz || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
+    networks:
+      - app-net
 
 volumes:
   postgres_data:
+  seaweedfs_data:
+
+networks:
+  app-net:
+    driver: bridge
