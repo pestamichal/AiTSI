@@ -8,8 +8,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { LocationService, PhotoService } from '@services';
-import { PhotoCreateModel, RegionNode, TerritorialData } from '@models';
-import { Router } from '@angular/router';
+import { EditPhotoModel, PhotoResponseModel, RegionNode, TerritorialData } from '@models';
+import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap } from 'rxjs';
 import {
   optionalDayTakenValidator,
   optionalMonthTakenValidator,
@@ -22,18 +23,18 @@ function isEmpty(value: unknown): boolean {
 }
 
 @Component({
-  selector: 'app-create-photo',
+  selector: 'app-edit-photo',
   imports: [
     Header,
     ReactiveFormsModule
   ],
-  templateUrl: './create-photo.html',
-  styleUrl: './create-photo.scss',
+  templateUrl: './edit-photo.html',
+  styleUrl: './edit-photo.scss',
 })
-export class CreatePhoto implements OnInit {
+export class EditPhoto implements OnInit {
   public photoForm: FormGroup;
-  public previewUrl: string | null = null;
-  private lastFileExtension: string | null = null;
+  public photoId: string = "";
+  public photoData: PhotoResponseModel | undefined;
   private territorialData: TerritorialData | undefined;
 
   private readonly destroyRef = inject(DestroyRef);
@@ -41,6 +42,7 @@ export class CreatePhoto implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private photoService: PhotoService,
+    private route: ActivatedRoute,
     private router: Router,
     private locationService: LocationService
   ) {
@@ -55,7 +57,6 @@ export class CreatePhoto implements OnInit {
         yearTaken: [null, yearTakenValidator],
         monthTaken: [null, optionalMonthTakenValidator],
         dayTaken: [null, optionalDayTakenValidator],
-        photoData: ['', Validators.required],
       },
       { validators: [partialDateTakenGroupValidator] }
     );
@@ -112,9 +113,38 @@ export class CreatePhoto implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.locationService.getTerritorialData().subscribe((resp: TerritorialData) => {
-      this.territorialData = resp;
-    });
+    this.photoId = this.route.snapshot.paramMap.get('id') ?? '';
+    if (!this.photoId) {
+      return;
+    }
+
+    this.locationService
+      .getTerritorialData()
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        switchMap((resp: TerritorialData) => {
+          this.territorialData = resp;
+          return this.photoService.getPhoto(this.photoId);
+        })
+      )
+      .subscribe((photo: PhotoResponseModel) => {
+        this.photoData = photo;
+        this.photoForm.patchValue({
+          title: photo.title,
+          description: photo.description,
+          countryId: photo.countryId,
+          voivodeshipId: photo.voivodeshipId,
+          countyId: photo.countyId,
+          cityId: photo.cityId,
+          yearTaken: photo.yearTaken,
+          monthTaken: photo.monthTaken,
+          dayTaken: photo.dayTaken,
+        });
+      });
+  }
+
+  public getPhotoUrl(photoId: string): string{
+    return this.photoService.getPhotoUrl(photoId)
   }
 
   public getCountries(): RegionNode[]{
@@ -141,52 +171,19 @@ export class CreatePhoto implements OnInit {
     return countyData?.subregions ?? [];
   }
 
-  public onPhotoSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) {
-      return;
-    }
-    const dot = file.name.lastIndexOf('.');
-    this.lastFileExtension =
-      dot >= 0 ? file.name.slice(dot + 1).toLowerCase() : null;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dataUrl = reader.result as string;
-      const base64 = dataUrl.includes(',') ? dataUrl.split(',')[1]! : dataUrl;
-      this.photoForm.patchValue({ photoData: base64 });
-      this.previewUrl = dataUrl;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  public createPhoto(): void {
+  public editPhoto(): void {
     this.photoForm.markAllAsTouched();
     this.normalizeLocationSelection();
     if (this.photoForm.valid) {
       this.photoService
-        .uploadPhoto(this.preparePhotoModel())
+        .editPhoto(this.preparePhotoModel())
         .pipe()
         .subscribe(() => {
           this.photoForm.reset();
-          this.lastFileExtension = null;
-          this.previewUrl = null;
           void this.router.navigate(['/feed']);
         });
     }
   }
-
-  // private buildDateTakenIso(): string {
-  //   const v = this.photoForm.getRawValue() as {
-  //     yearTaken: number | null;
-  //     monthTaken: number | null;
-  //     dayTaken: number | null;
-  //   };
-  //   const year = Number(v.yearTaken);
-  //   const month = isEmpty(v.monthTaken) ? 1 : Number(v.monthTaken);
-  //   const day = isEmpty(v.dayTaken) ? 1 : Number(v.dayTaken);
-  //   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-  // }
 
   private normalizeLocationSelection(): void {
     const countryId = this.toNumberOrNull(this.photoForm.value.countryId);
@@ -260,8 +257,9 @@ export class CreatePhoto implements OnInit {
     return countyData?.subregions ?? [];
   }
 
-  private preparePhotoModel(): PhotoCreateModel {
+  private preparePhotoModel(): EditPhotoModel {
     return {
+      id: this.photoId,
       title: this.photoForm.value.title,
       description: this.photoForm.value.description,
       countryId: Number(this.photoForm.value.countryId),
@@ -269,10 +267,8 @@ export class CreatePhoto implements OnInit {
       countyId: this.toNumberOrNull(this.photoForm.value.countyId),
       cityId: this.toNumberOrNull(this.photoForm.value.cityId),
       yearTaken: this.photoForm.value.yearTaken,
-      monthTaken: this.toNumberOrNull(this.photoForm.value.monthTaken),
-      dayTaken: this.toNumberOrNull(this.photoForm.value.dayTaken),
-      photoData: this.photoForm.value.photoData,
-      fileExtension: this.lastFileExtension ?? 'jpg',
+      monthTaken: this.photoForm.value.monthTaken,
+      dayTaken: this.photoForm.value.dayTaken,
     };
   }
 }

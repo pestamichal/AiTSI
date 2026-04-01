@@ -54,6 +54,22 @@ public class PhotosController : BaseController
         return Ok(result);
     }
 
+    [HttpGet(Name = "GetPhoto")]
+    [Route("{photoId:guid}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetPhoto(Guid photoId)
+    {
+        _logger.LogInformation("Processing GetPhoto request");
+        var photo = await _databaseManager.GetPhotoAsync(photoId);
+        if(photo == null)
+        {
+            _logger.LogWarning($"Photo with id: {photoId} not found");
+            return NotFound();
+        }
+        
+        return Ok(photo);
+    }
+
     [HttpGet(Name = "GetPhotoFile")]
     [Route("file/{photoId:guid}")]
     [AllowAnonymous]
@@ -98,8 +114,16 @@ public class PhotosController : BaseController
             return Unauthorized();
         }
 
-        if (model.PhotoData == null || model.PhotoData.Length == 0)
+        if (model.PhotoData == null || model.PhotoData.Length == 0){
+            _logger.LogWarning("PhotoData is required and must not be empty.");
             return BadRequest("PhotoData is required and must not be empty.");
+        }
+
+        bool locationValid = await _databaseManager.ValidateTerritorialHierarchy(model.CountryId, model.VoivodeshipId, model.CountyId, model.CityId);
+        if(!locationValid){
+            _logger.LogWarning($"Invalid combination of location ids. Country: {model.CountryId}, Voivodeship: {model.VoivodeshipId}, County: {model.CountyId}, City: {model.CityId}");
+            return BadRequest("Invalid combination of location ids.");
+        }
 
         var normalizedExt = TryNormalizeUploadedExtension(model.FileExtension);
         if (normalizedExt == null)
@@ -134,6 +158,61 @@ public class PhotosController : BaseController
         };
 
         var photo = await _databaseManager.CreatePhoto(dto);
+        return Ok(photo);
+    }
+
+    [HttpPost(Name = "EditPhoto")]
+    [Route("edit")]
+    [Authorize(Policy = AuthPolicies.NotBlocked)]
+    public async Task<IActionResult> EditPhoto([FromBody] EditPhotoModel photoData)
+    {
+        var email = _jwtHelper.GetEmail(User);
+        var googleSubject = _jwtHelper.GetGoogleSubject(User);
+
+        if (string.IsNullOrEmpty(email))
+        {
+            _logger.LogWarning("Authenticated request missing email claim");
+            return Unauthorized();
+        }
+
+        var photoId = photoData.Id;
+
+        var dbPhoto = await _databaseManager.GetPhotoAsync(photoId);
+        if (dbPhoto == null)
+        {
+            _logger.LogWarning($"Photo with id: {photoId} not found");
+            return NotFound();
+        }
+
+        bool locationValid = await _databaseManager.ValidateTerritorialHierarchy(photoData.CountryId, photoData.VoivodeshipId, photoData.CountyId, photoData.CityId);
+        if(!locationValid){
+            _logger.LogWarning($"Invalid combination of location ids. Country: {photoData.CountryId}, Voivodeship: {photoData.VoivodeshipId}, County: {photoData.CountyId}, City: {photoData.CityId}");
+            return BadRequest("Invalid combination of location ids.");
+        }
+
+        bool isAdmin = await _databaseManager.IsAdmin(email);
+
+        if(email != dbPhoto.Author && !isAdmin)
+        {
+            _logger.LogWarning($"User: {email} is not authorized to edit photo: {photoId}!");
+            return NotFound();
+        }
+
+        var dto = new EditPhotoDto
+        {
+            Id = photoId,
+            Title = photoData.Title ?? string.Empty,
+            Description = photoData.Description ?? string.Empty,
+            CountryId = photoData.CountryId,
+            VoivodeshipId = photoData.VoivodeshipId,
+            CountyId = photoData.CountyId,
+            CityId = photoData.CityId,
+            YearTaken = photoData.YearTaken,
+            MonthTaken = photoData.MonthTaken,
+            DayTaken = photoData.DayTaken
+        };
+
+        var photo = await _databaseManager.EditPhoto(dto);
         return Ok(photo);
     }
 

@@ -14,5 +14,15 @@ export const routes: Routes = [
     path: 'create-photo', 
     loadComponent: () => import('./pages/create-photo/create-photo').then(m => m.CreatePhoto),
     canActivate: [loggedInGuard]
+  },
+  {
+    path: 'edit-photo/:id',
+    pathMatch: 'full',
+    loadComponent: () => import('./pages/edit-photo/edit-photo').then(m => m.EditPhoto),
+    canActivate: [loggedInGuard],
+  },
+  {
+    path:"**",
+    redirectTo: 'feed'
   }
 ];

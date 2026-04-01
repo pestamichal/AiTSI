@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { PhotoResponseModel, UserInfo } from '@models';
 import { AuthService, PhotoService } from '@services';
 
@@ -33,7 +34,8 @@ export class PhotoDisplay {
 
   constructor(
     private photoService: PhotoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.authService.isLoggedIn
       .pipe(takeUntilDestroyed())
@@ -65,9 +67,9 @@ export class PhotoDisplay {
     this.menuOpen = false;
   }
 
-  /** Placeholder — implement edit flow later */
   public onEditPhoto(): void {
     this.closeMenu();
+    this.router.navigate([`/edit-photo/${this.photoData?.id}`])
   }
 
   public onBlockAuthor(): void {

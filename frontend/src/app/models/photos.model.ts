@@ -2,14 +2,27 @@ export interface PhotoCreateModel{
     title: string;
     description: string,
     countryId: number,
-    voivodeshipId: number,
-    countyId: number,
-    cityId: number,
+    voivodeshipId: number | null,
+    countyId: number | null,
+    cityId: number | null,
     yearTaken: number,
-    monthTaken: number,
-    dayTaken: number,
+    monthTaken: number | null,
+    dayTaken: number | null,
     photoData: string,
     fileExtension: string,
+}
+
+export interface EditPhotoModel{
+    id: string,
+    title: string;
+    description: string,
+    countryId: number,
+    voivodeshipId: number | null,
+    countyId: number | null,
+    cityId: number | null,
+    yearTaken: number,
+    monthTaken: number | null,
+    dayTaken: number | null,
 }
 
 export interface PhotoResponseModel{
@@ -18,10 +31,10 @@ export interface PhotoResponseModel{
     title: string;
     description: string,
     countryId: number,
-    voivodeshipId: number,
-    countyId: number,
-    cityId: number,
+    voivodeshipId: number | null,
+    countyId: number | null,
+    cityId: number | null,
     yearTaken: number,
-    monthTaken: number,
-    dayTaken: number
+    monthTaken: number | null,
+    dayTaken: number | null
 }

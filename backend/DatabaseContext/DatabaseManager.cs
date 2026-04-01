@@ -67,6 +67,27 @@ namespace backend.DatabaseContext
             return photo;
         }
 
+        public async Task<Photo?> EditPhoto(EditPhotoDto photoDto)
+        {
+            Photo? dbPhoto = await _context.Photos.FindAsync(photoDto.Id);
+            if(dbPhoto != null)
+            {
+                dbPhoto.Title = photoDto.Title;
+                dbPhoto.Description = photoDto.Description;
+                dbPhoto.YearTaken = photoDto.YearTaken;
+                dbPhoto.MonthTaken = photoDto.MonthTaken;
+                dbPhoto.DayTaken = photoDto.DayTaken;
+                dbPhoto.CountryId = photoDto.CountryId;
+                dbPhoto.VoivodeshipId = photoDto.VoivodeshipId;
+                dbPhoto.CountyId = photoDto.CountyId;
+                dbPhoto.CityId = photoDto.CityId;
+
+                await _context.SaveChangesAsync();
+            }
+
+            return dbPhoto;
+        }
+
         #endregion
 
         #region UserInfo
@@ -112,6 +133,67 @@ namespace backend.DatabaseContext
                         .ThenInclude(co => co.Cities)
                 .AsNoTracking()
                 .ToListAsync();
+        }
+
+        public async Task<bool> ValidateTerritorialHierarchy(int countryId, int? voivodeshipId, int? countyId, int? cityId)
+        {
+            if (countryId <= 0)
+            {
+                return false;
+            }
+
+            if (voivodeshipId is null && (countyId is not null || cityId is not null))
+            {
+                return false;
+            }
+
+            if (countyId is null && cityId is not null)
+            {
+                return false;
+            }
+
+            bool countryExists = await _context.Countries
+                .AsNoTracking()
+                .AnyAsync(c => c.Id == countryId);
+            if (!countryExists)
+            {
+                return false;
+            }
+
+            if (voivodeshipId is null)
+            {
+                return true;
+            }
+
+            bool voivodeshipValid = await _context.Voivodeships
+                .AsNoTracking()
+                .AnyAsync(v => v.Id == voivodeshipId && v.CountryId == countryId);
+            if (!voivodeshipValid)
+            {
+                return false;
+            }
+
+            if (countyId is null)
+            {
+                return true;
+            }
+
+            bool countyValid = await _context.Counties
+                .AsNoTracking()
+                .AnyAsync(c => c.Id == countyId && c.VoivodeshipId == voivodeshipId);
+            if (!countyValid)
+            {
+                return false;
+            }
+
+            if (cityId is null)
+            {
+                return true;
+            }
+
+            return await _context.Cities
+                .AsNoTracking()
+                .AnyAsync(c => c.Id == cityId && c.CountyId == countyId);
         }
 
         #endregion
