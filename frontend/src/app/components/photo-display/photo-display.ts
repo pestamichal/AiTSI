@@ -94,7 +94,7 @@ export class PhotoDisplay {
     this.closeMenu();
   }
 
-  public buildDate(yearTaken: number, monthTaken: number | undefined, dayTaken: number | undefined): string {
+  public buildDate(yearTaken: number, monthTaken: number | undefined | null, dayTaken: number | undefined | null): string {
     const year = Number(yearTaken);
     const month = isEmpty(monthTaken) ? "" : Number(monthTaken);
     if(month){
