@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  column-gap: 1.25rem;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--color-border);
   background-color: var(--color-bg);
@@ -34,7 +35,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.75rem;
+  gap: 1rem;
   min-width: 0;
 }
 
@@ -76,5 +77,22 @@
 
   &:hover {
     opacity: 0.9;
+  }
+}
+
+@media (max-width: 991px) {
+  .header__title {
+    display: none;
+  }
+
+  .header__spacer {
+    display: none;
+  }
+
+  .header__actions {
+    flex: 1 1 auto;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
   }
 }

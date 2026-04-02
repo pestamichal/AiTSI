@@ -65,6 +65,10 @@ public class AppDbContext : DbContext
                 .HasMethod("gin")
                 .HasOperators("gin_trgm_ops");
 
+            e.HasIndex(x => x.SearchVector)
+                .HasDatabaseName("idx_photos_search")
+                .HasMethod("gin");
+
             e.HasOne(p => p.Country)
                 .WithMany(c => c.Photos)
                 .HasForeignKey(p => p.CountryId)

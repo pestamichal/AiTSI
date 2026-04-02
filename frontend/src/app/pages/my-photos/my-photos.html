@@ -1,0 +1,43 @@
+
+<app-header></app-header>
+<main class="main-content">
+    <div
+        class="filter-drawer-backdrop"
+        [class.filter-drawer-backdrop--open]="filterDrawerOpen"
+        (click)="closeFilterDrawer()"
+        aria-hidden="true"
+    ></div>
+
+    <div
+        id="filter-tab"
+        class="filter-sidebar"
+        [class.filter-sidebar--open]="filterDrawerOpen"
+    >
+        <button
+            type="button"
+            class="filter-drawer-close"
+            aria-label="Zamknij menu regionów"
+            (click)="closeFilterDrawer()"
+        >
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+        <app-filter-tab class="filter-sidebar__tab"></app-filter-tab>
+    </div>
+
+    <div id="main-panel">
+        <button
+            type="button"
+            class="filter-drawer-open"
+            (click)="openFilterDrawer()"
+            [attr.aria-expanded]="filterDrawerOpen"
+            aria-controls="filter-tab"
+        >
+            <i class="bi bi-geo-alt" aria-hidden="true"></i>
+            <span>Wybór regionu</span>
+        </button>
+        <app-search-bar></app-search-bar>
+        <div class="photo-list-scroll">
+            <app-photo-list></app-photo-list>
+        </div>
+    </div>
+</main>

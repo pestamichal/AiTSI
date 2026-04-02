@@ -18,21 +18,31 @@
     min-height: 100%;
     box-sizing: border-box;
 
-    #current-node{
+    #current-node {
+        font-size: 1.125rem;
         font-weight: 600;
         padding: 0.5rem;
         margin: 0;
         text-decoration: underline;
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
 
-    .action-button{
+    .action-button {
         padding: 0.35rem 0.75rem;
         font-size: 1rem;
         color: var(--color-text);
         background: none;
         border: none;
         cursor: pointer;
-        
+        text-align: left;
+        max-width: 100%;
+
+        span {
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
         &:hover {
             opacity: 0.9;
         }
@@ -49,16 +59,18 @@ ul{
         margin: 0;
         background: var(--color-bg-secondary);
     
-        .filter-button{
+        .filter-button {
             padding: 0.35rem 0.75rem;
             width: 100%;
             text-align: left;
             font-size: 1rem;
+            line-height: 1.25;
             color: var(--color-text);
             background: none;
             border: none;
             cursor: pointer;
-          
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
         &:hover {
           opacity: 0.7;
@@ -66,3 +78,30 @@ ul{
     }
 }
 
+@media (max-width: 991px) {
+    .filter-tab #current-node {
+        font-size: 1rem;
+    }
+
+    .filter-tab .action-button {
+        font-size: 0.875rem;
+    }
+
+    ul.filters-list li .filter-button {
+        font-size: 0.8125rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .filter-tab #current-node {
+        font-size: 0.9375rem;
+    }
+
+    .filter-tab .action-button {
+        font-size: 0.8125rem;
+    }
+
+    ul.filters-list li .filter-button {
+        font-size: 0.75rem;
+    }
+}

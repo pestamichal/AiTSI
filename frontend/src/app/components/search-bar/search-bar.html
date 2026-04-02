@@ -1,1 +1,161 @@
-<p>search-bar works!</p>
+<div class="search-bar">
+    <form class="search-form" [formGroup]="searchForm" (ngSubmit)="searchPhotos()">
+        <div class="form-subsection form-subsection--keywords">
+            <div class="form-subsection-input-group">
+                <label for="search-phrase">Słowa kluczowe</label>
+                <input
+                    type="text"
+                    class="form-input"
+                    id="search-phrase"
+                    formControlName="keywords"
+                />
+            </div>
+        </div>
+
+        <div class="date-and-actions">
+            <div class="date-range">
+                <span class="date-range-tag">Od</span>
+                <div class="date-fields">
+                    <div class="form-subsection-input-group">
+                        <label for="year-from">Rok</label>
+                        <input
+                            id="year-from"
+                            type="number"
+                            class="form-input form-input--date"
+                            formControlName="yearFrom"
+                        />
+                    </div>
+                    <div class="form-subsection-input-group">
+                        <label for="month-from">Miesiąc</label>
+                        <input
+                            id="month-from"
+                            type="number"
+                            class="form-input form-input--date"
+                            formControlName="monthFrom"
+                        />
+                    </div>
+                    <div class="form-subsection-input-group">
+                        <label for="day-from">Dzień</label>
+                        <input
+                            id="day-from"
+                            type="number"
+                            class="form-input form-input--date"
+                            formControlName="dayFrom"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div class="date-range">
+                <span class="date-range-tag">Do</span>
+                <div class="date-fields">
+                    <div class="form-subsection-input-group">
+                        <label for="year-to">Rok</label>
+                        <input
+                            id="year-to"
+                            type="number"
+                            class="form-input form-input--date"
+                            formControlName="yearTo"
+                        />
+                    </div>
+                    <div class="form-subsection-input-group">
+                        <label for="month-to">Miesiąc</label>
+                        <input
+                            id="month-to"
+                            type="number"
+                            class="form-input form-input--date"
+                            formControlName="monthTo"
+                        />
+                    </div>
+                    <div class="form-subsection-input-group">
+                        <label for="day-to">Dzień</label>
+                        <input
+                            id="day-to"
+                            type="number"
+                            class="form-input form-input--date"
+                            formControlName="dayTo"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-subsection-input-group sort-select-group">
+                <label for="sort-order">Kolejność</label>
+                <select id="sort-order" class="form-input form-select" formControlName="sortOrder">
+                    <option value="newest">Od najnowszych</option>
+                    <option value="oldest">Od najstarszych</option>
+                </select>
+            </div>
+
+            <div class="search-actions">
+                <button type="submit">Szukaj</button>
+            </div>
+        </div>
+
+        @if (searchSubmitted) {
+            <div class="search-form-errors">
+                @if (searchForm.get('yearFrom')?.errors?.['notInteger']) {
+                    <p class="field-error">Rok (od) musi być liczbą całkowitą.</p>
+                }
+                @if (searchForm.get('yearFrom')?.errors?.['yearRange']) {
+                    <p class="field-error">Rok (od) musi być z zakresu 1000–9999.</p>
+                }
+                @if (searchForm.get('monthFrom')?.errors?.['notInteger']) {
+                    <p class="field-error">Miesiąc (od) musi być liczbą całkowitą.</p>
+                }
+                @if (searchForm.get('monthFrom')?.errors?.['monthRange']) {
+                    <p class="field-error">Miesiąc (od) musi być z zakresu 1–12.</p>
+                }
+                @if (searchForm.get('dayFrom')?.errors?.['notInteger']) {
+                    <p class="field-error">Dzień (od) musi być liczbą całkowitą.</p>
+                }
+                @if (searchForm.get('dayFrom')?.errors?.['dayRange']) {
+                    <p class="field-error">Dzień (od) musi być z zakresu 1–31.</p>
+                }
+
+                @if (searchForm.get('yearTo')?.errors?.['notInteger']) {
+                    <p class="field-error">Rok (do) musi być liczbą całkowitą.</p>
+                }
+                @if (searchForm.get('yearTo')?.errors?.['yearRange']) {
+                    <p class="field-error">Rok (do) musi być z zakresu 1000–9999.</p>
+                }
+                @if (searchForm.get('monthTo')?.errors?.['notInteger']) {
+                    <p class="field-error">Miesiąc (do) musi być liczbą całkowitą.</p>
+                }
+                @if (searchForm.get('monthTo')?.errors?.['monthRange']) {
+                    <p class="field-error">Miesiąc (do) musi być z zakresu 1–12.</p>
+                }
+                @if (searchForm.get('dayTo')?.errors?.['notInteger']) {
+                    <p class="field-error">Dzień (do) musi być liczbą całkowitą.</p>
+                }
+                @if (searchForm.get('dayTo')?.errors?.['dayRange']) {
+                    <p class="field-error">Dzień (do) musi być z zakresu 1–31.</p>
+                }
+
+                @if (searchForm.errors?.['searchDateFrom']?.['monthWithoutYear']) {
+                    <p class="field-error">Aby podać miesiąc (od), podaj najpierw rok.</p>
+                }
+                @if (searchForm.errors?.['searchDateFrom']?.['dayWithoutMonth']) {
+                    <p class="field-error">Aby podać dzień (od), podaj najpierw miesiąc.</p>
+                }
+                @if (searchForm.errors?.['searchDateFrom']?.['invalidCalendarDate']) {
+                    <p class="field-error">Data (od) nie istnieje w kalendarzu (np. 30 lutego).</p>
+                }
+
+                @if (searchForm.errors?.['searchDateTo']?.['monthWithoutYear']) {
+                    <p class="field-error">Aby podać miesiąc (do), podaj najpierw rok.</p>
+                }
+                @if (searchForm.errors?.['searchDateTo']?.['dayWithoutMonth']) {
+                    <p class="field-error">Aby podać dzień (do), podaj najpierw miesiąc.</p>
+                }
+                @if (searchForm.errors?.['searchDateTo']?.['invalidCalendarDate']) {
+                    <p class="field-error">Data (do) nie istnieje w kalendarzu (np. 30 lutego).</p>
+                }
+
+                @if (searchForm.errors?.['searchDateRangeOrder']) {
+                    <p class="field-error">Data „od” nie może być późniejsza niż data „do”.</p>
+                }
+            </div>
+        }
+    </form>
+</div>

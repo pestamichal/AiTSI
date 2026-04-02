@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+using NpgsqlTypes;
 
 namespace backend.DatabaseContext.DatabaseModels;
 
@@ -53,6 +55,9 @@ public class Photo
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
 
+    [Column("search_vector", TypeName = "tsvector")]
+    [JsonIgnore]
+    public NpgsqlTsVector? SearchVector { get; set; }
 
     [ForeignKey(nameof(CountryId))]
     public Country Country { get; set; } = null!;

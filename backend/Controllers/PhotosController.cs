@@ -26,17 +26,19 @@ public class PhotosController : BaseController
 
     }
 
-    [HttpGet(Name = "GetPhotos")]
-    [Route("get")]
+    [HttpGet(Name = "SearchPhotos")]
+    [Route("search")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetPhotos()
+    public async Task<IActionResult> SearchPhotos([FromQuery] SearchPhotosQuery? query)
     {
-        _logger.LogInformation("Processing GetPhotos request");
-        var photos = await _databaseManager.SearchPhotos();
-        List<PhotoResponseModel> result = [];
-        photos.ForEach(p => {
-            _logger.LogInformation($"Photos: {p}");
-            PhotoResponseModel photoData = new PhotoResponseModel(){
+        _logger.LogInformation("Processing SearchPhotos request");
+        var criteria = MapSearchQueryToCriteria(query);
+        var photos = await _databaseManager.SearchPhotos(criteria);
+        List<PhotoResponseModel> result = new(photos.Count);
+        foreach (var p in photos)
+        {
+            result.Add(new PhotoResponseModel
+            {
                 Id = p.Id,
                 Author = p.Author,
                 Title = p.Title,
@@ -48,10 +50,32 @@ public class PhotosController : BaseController
                 YearTaken = p.YearTaken,
                 MonthTaken = p.MonthTaken,
                 DayTaken = p.DayTaken,
-            };
-            result.Add(photoData);
-        });
+            });
+        }
+
         return Ok(result);
+    }
+
+    private static SearchPhotosCriteria MapSearchQueryToCriteria(SearchPhotosQuery? query)
+    {
+        query ??= new SearchPhotosQuery();
+        var sort = query.Sort?.Trim().ToLowerInvariant();
+        return new SearchPhotosCriteria
+        {
+            Keywords = query.Keywords,
+            YearFrom = query.YearFrom,
+            MonthFrom = query.MonthFrom,
+            DayFrom = query.DayFrom,
+            YearTo = query.YearTo,
+            MonthTo = query.MonthTo,
+            DayTo = query.DayTo,
+            SortOldestFirst = sort == "oldest",
+            CountryId = query.CountryId,
+            VoivodeshipId = query.VoivodeshipId,
+            CountyId = query.CountyId,
+            CityId = query.CityId,
+            Author = string.IsNullOrWhiteSpace(query.Author) ? null : query.Author.Trim(),
+        };
     }
 
     [HttpGet(Name = "GetPhoto")]

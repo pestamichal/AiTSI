@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environments';
 import { EditPhotoModel, PhotoCreateModel, PhotoResponseModel } from '@models';
@@ -38,7 +38,18 @@ export class PhotoService {
     return `${this.apiUrl}/file/${photoId}`;
   }
 
-  public getPhotos(): Observable<PhotoResponseModel[]>{
-    return this.http.get<PhotoResponseModel[]>(`${this.apiUrl}/get`);
+  public getPhotos(
+    query?: Record<string, string | number | boolean | undefined | null>
+  ): Observable<PhotoResponseModel[]> {
+    let params = new HttpParams();
+    if (query) {
+      for (const [key, value] of Object.entries(query)) {
+        if (value === undefined || value === null || value === '') {
+          continue;
+        }
+        params = params.set(key, String(value));
+      }
+    }
+    return this.http.get<PhotoResponseModel[]>(`${this.apiUrl}/search`, { params });
   }
 }

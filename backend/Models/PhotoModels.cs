@@ -1,5 +1,22 @@
 namespace backend.Models;
 
+public class SearchPhotosQuery
+{
+    public string? Keywords { get; set; }
+    public int? YearFrom { get; set; }
+    public int? MonthFrom { get; set; }
+    public int? DayFrom { get; set; }
+    public int? YearTo { get; set; }
+    public int? MonthTo { get; set; }
+    public int? DayTo { get; set; }
+    public string? Sort { get; set; }
+    public int? CountryId { get; set; }
+    public int? VoivodeshipId { get; set; }
+    public int? CountyId { get; set; }
+    public int? CityId { get; set; }
+    public string? Author { get; set; }
+}
+
 public class CreatePhotoModel
 {
     public string? Title { get; set; }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RegionNode, TerritorialData } from '@models';
-import { LocationService } from '@services';
+import { LocationService, PhotoFeedService } from '@services';
 
 @Component({
   selector: 'app-filter-tab',
@@ -13,12 +13,16 @@ export class FilterTab implements OnInit {
   public breadcrumb: RegionNode[] = [];
   public currentChildren: RegionNode[] = [];
 
-  constructor(private locationService: LocationService) {}
+  constructor(
+    private locationService: LocationService,
+    private photoFeed: PhotoFeedService
+  ) {}
 
   public ngOnInit(): void {
     this.locationService.getTerritorialData().subscribe((resp: TerritorialData) => {
       this.breadcrumb = [resp.data[0]];
       this.currentChildren = resp.data[0].subregions!;
+      this.syncTerritoryAndRefresh();
     });
   }
 
@@ -31,6 +35,7 @@ export class FilterTab implements OnInit {
   public navigateForward(child: RegionNode): void {
     this.breadcrumb = [...this.breadcrumb, child];
     this.currentChildren = child.subregions ?? [];
+    this.syncTerritoryAndRefresh();
   }
 
   public navigateBack(): void {
@@ -38,5 +43,11 @@ export class FilterTab implements OnInit {
     this.breadcrumb = this.breadcrumb.slice(0, -1);
     const parent = this.breadcrumb[this.breadcrumb.length - 1];
     this.currentChildren = parent.subregions ?? [];
+    this.syncTerritoryAndRefresh();
+  }
+
+  private syncTerritoryAndRefresh(): void {
+    this.photoFeed.setTerritoryBreadcrumb(this.breadcrumb);
+    this.photoFeed.refreshPhotos();
   }
 }

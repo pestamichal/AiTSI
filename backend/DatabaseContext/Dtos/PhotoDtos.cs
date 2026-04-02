@@ -1,5 +1,22 @@
 namespace backend.DatabaseContext.Dtos
 {
+    public class SearchPhotosCriteria
+    {
+        public string? Keywords { get; set; }
+        public int? YearFrom { get; set; }
+        public int? MonthFrom { get; set; }
+        public int? DayFrom { get; set; }
+        public int? YearTo { get; set; }
+        public int? MonthTo { get; set; }
+        public int? DayTo { get; set; }
+        public bool SortOldestFirst { get; set; }
+        public int? CountryId { get; set; }
+        public int? VoivodeshipId { get; set; }
+        public int? CountyId { get; set; }
+        public int? CityId { get; set; }
+        public string? Author { get; set; }
+    }
+
     public class CreatePhotoDto
     {
         public Guid? Id { get; set; }

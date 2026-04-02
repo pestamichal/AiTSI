@@ -22,6 +22,11 @@ export const routes: Routes = [
     canActivate: [loggedInGuard],
   },
   {
+    path: 'my-photos',
+    loadComponent: () => import('./pages/my-photos/my-photos').then(m => m.MyPhotos),
+    canActivate: [loggedInGuard],
+  },
+  {
     path:"**",
     redirectTo: 'feed'
   }
