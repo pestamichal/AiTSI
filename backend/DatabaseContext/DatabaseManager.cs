@@ -77,8 +77,8 @@ namespace backend.DatabaseContext
             }
 
             list = criteria.SortOldestFirst
-                ? list.OrderBy(p => p.CreatedAt).ToList()
-                : list.OrderByDescending(p => p.CreatedAt).ToList();
+                ? list.OrderBy(p => PhotoIntervalStart(p.YearTaken, p.MonthTaken, p.DayTaken)).ToList()
+                : list.OrderByDescending(p => PhotoIntervalStart(p.YearTaken, p.MonthTaken, p.DayTaken)).ToList();
 
             return list;
         }
