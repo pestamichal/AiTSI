@@ -1,4 +1,8 @@
 <div id="container">
-    <a class="user-action" href="/create-photo">Dodaj zdjęcie</a>
+    @if (userBlocked) {
+        <span class="user-action user-action--disabled" aria-disabled="true">Dodaj zdjęcie</span>
+    } @else {
+        <a class="user-action" href="/create-photo">Dodaj zdjęcie</a>
+    }
     <a class="user-action" href="/my-photos">Moje zdjęcia</a>
 </div>

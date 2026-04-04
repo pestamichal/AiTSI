@@ -68,6 +68,9 @@ export class PhotoDisplay {
   }
 
   public onEditPhoto(): void {
+    if (this.userInfo?.isBlocked) {
+      return;
+    }
     this.closeMenu();
     this.router.navigate([`/edit-photo/${this.photoData?.id}`])
   }

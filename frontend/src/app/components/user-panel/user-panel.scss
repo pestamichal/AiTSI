@@ -31,5 +31,12 @@
         &:hover {
             opacity: 0.9;
         }
+
+        &--disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            color: var(--color-text-muted);
+            pointer-events: none;
+        }
     }
 }

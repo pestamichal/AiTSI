@@ -110,6 +110,16 @@
         &--danger {
             color: rgb(160, 40, 40);
         }
+
+        &:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            color: var(--color-text-muted);
+
+            &:hover {
+                background-color: transparent;
+            }
+        }
     }
 
     #breadcrumbs{
