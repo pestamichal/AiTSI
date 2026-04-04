@@ -49,6 +49,9 @@
         </div>
         <app-search-bar></app-search-bar>
         <div class="photo-list-scroll">
+            @if (photoListEmpty) {
+                <p role="status">Brak wyników</p>
+            }
             <app-photo-list></app-photo-list>
         </div>
     </div>

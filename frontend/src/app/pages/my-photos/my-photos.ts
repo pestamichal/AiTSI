@@ -1,4 +1,5 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Header, FilterTab, SearchBar, PhotoList, UserPanel } from '@components';
 import { UserInfo } from '@models';
 import { AuthService, PhotoFeedService } from '@services';
@@ -16,11 +17,18 @@ import { AuthService, PhotoFeedService } from '@services';
 })
 export class MyPhotos implements OnInit, OnDestroy {
   protected filterDrawerOpen = false;
+  protected photoListEmpty = false;
 
   constructor(
     private photoFeed: PhotoFeedService,
     private authService: AuthService
-  ) {}
+  ) {
+    this.photoFeed.photos$
+      .pipe(takeUntilDestroyed())
+      .subscribe((photos) => {
+        this.photoListEmpty = photos.length === 0;
+      });
+  }
 
   protected openFilterDrawer(): void {
     this.filterDrawerOpen = true;

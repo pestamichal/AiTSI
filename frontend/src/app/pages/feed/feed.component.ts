@@ -1,5 +1,7 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Header, FilterTab, SearchBar, UserPanel, PhotoList} from '@components';
+import { PhotoFeedService } from '@services';
 
 @Component({
   selector: 'app-feed.component',
@@ -14,8 +16,19 @@ import { Header, FilterTab, SearchBar, UserPanel, PhotoList} from '@components';
   styleUrl: './feed.component.scss',
 })
 export class FeedComponent {
+  private readonly photoFeed = inject(PhotoFeedService);
+
   protected filterDrawerOpen = false;
   protected userDrawerOpen = false;
+  protected photoListEmpty = false;
+
+  constructor() {
+    this.photoFeed.photos$
+      .pipe(takeUntilDestroyed())
+      .subscribe((photos) => {
+        this.photoListEmpty = photos.length === 0;
+      });
+  }
 
   protected openFilterDrawer(): void {
     this.filterDrawerOpen = true;
